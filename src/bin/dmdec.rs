@@ -6,7 +6,7 @@ use clap::{Arg, Command};
 use petgraph::{graphmap::DiGraphMap, algo::tarjan_scc};
 use sprs::{TriMatBase, CsMatBase};
 
-use xmrtrace::{read_edges, cn_txgraph_maximum_matching, write_ring_sets, remove_closed_set_pks};
+use xmrtrace::{read_edges, cn_txgraph_maximum_matching, write_ring_sets};
 
 fn main() {
     let cmd = Command::new("Dulmage-Mendelsohn Decomposition Calculator")
@@ -207,24 +207,24 @@ fn main() {
         if comp_vec.len() == 1 {
             singletons += 1;
         }
-        let mut ki_set: HashSet<u32> = HashSet::new();
-        let mut pk_set: HashSet<u32> = HashSet::new();
-        for pk in &comp_vec {
-            write!(fine_decomp_file_buf, "{} ", pk).expect(file_err_msg);
-            let ki = pk_mates[*pk as usize];
-            pk_set.insert(*pk);
-            ki_set.insert(ki);
-        }
+//        let mut ki_set: HashSet<u32> = HashSet::new();
+//        let mut pk_set: HashSet<u32> = HashSet::new();
+//        for pk in &comp_vec {
+//            write!(fine_decomp_file_buf, "{} ", pk).expect(file_err_msg);
+//            let ki = pk_mates[*pk as usize];
+//            pk_set.insert(*pk);
+//            ki_set.insert(ki);
+//        }
 
-        writeln!(fine_decomp_file_buf, "").expect(file_err_msg); // End the line
-        for ki in &ki_set {
-            write!(fine_decomp_file_buf, "{} ", *ki).expect(file_err_msg);
-        }
-        writeln!(fine_decomp_file_buf, "").expect(file_err_msg); // End the line
+//        writeln!(fine_decomp_file_buf, "").expect(file_err_msg); // End the line
+//        for ki in &ki_set {
+//            write!(fine_decomp_file_buf, "{} ", *ki).expect(file_err_msg);
+//        }
+//        writeln!(fine_decomp_file_buf, "").expect(file_err_msg); // End the line
 
-        remove_closed_set_pks(ki_set, pk_set, &mut tx_ring_sets, &pk_to_ki_map);
+//        remove_closed_set_pks(ki_set, pk_set, &mut tx_ring_sets, &pk_to_ki_map);
     }
-    write!(closed_set_sizes_file_buf, "\n").expect(file_err_msg);
+//    write!(closed_set_sizes_file_buf, "\n").expect(file_err_msg);
 
     println!("Singletons (traceable keyimages): {}", singletons);
     println!("Closed set size histogram: {:?}", closed_set_size_histogram);
